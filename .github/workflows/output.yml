@@ -1,0 +1,10 @@
+name: Output information
+on: workflow_dispatch
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Github context
+        run: echo "${{ toJSON(github) }}"
+        # search in google about github action context and github action functions and expression
+        # "${{}}" this indicates that wa wanna access some meta data made available by github

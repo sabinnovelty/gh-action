@@ -26,7 +26,9 @@
 # # 2 make sure nodejs is installed and all dependencies installed
 
 name: Deploy project
-on: push
+# here in on we can use [] to add multple trigger
+# on: push
+on: [push,workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-latest
