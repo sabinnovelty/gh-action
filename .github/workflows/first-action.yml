@@ -1,0 +1,21 @@
+# step 1 define workflow name
+name: First Workflow
+# step 2 define event when to trigger this workflow
+# workflow_dispatch = this is used to manuaaly trigger event. It waits to run manually by user
+on: workflow_dispatch
+# step 2 define jobs
+jobs:
+# step 3 give a job name
+  first-job:
+    # step 4 define runner or environment to run this job
+    # search githaction runner in google to get more information
+    runs-on: ubuntu-latest
+    # step 5 define steps for jobs
+    steps:
+      # name is used to give step name
+      - name: Print greeting
+        run: echo "Hello world"
+      - name: Print goodbye
+        run: echo "good bye"
+  
+  
