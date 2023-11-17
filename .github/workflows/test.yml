@@ -9,7 +9,7 @@ jobs:
       # is already action defined. search github action ceckout in google to learn more
       # uses is used to define actions
       # with is used to configure actions. Some action required configuration
-        uses: actions/checkout
+        uses: actions/checkout@v2
         # with: 
       # - name: Install NodeJS
       #   uses: actions/setup-node@v3
