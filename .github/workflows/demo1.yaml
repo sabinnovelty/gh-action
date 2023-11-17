@@ -5,7 +5,15 @@ on:
       - opened
       # here we have used types for the activity types
   workflow_dispatch:
-    
+  push:
+    branches:
+      - main
+      - master
+      - 'dev-*' 
+      # e.g of single * = dev-new dev-this-is-new
+      - 'feat/**'
+      # double ** indicates - futher character with slashes e.g feat/new/button feat/new
+      # read more about workflow syntax(filtering) here https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 jobs:
   deploy:
     runs-on: ubuntu-latest
