@@ -1,0 +1,35 @@
+name: Events Demo 1
+on: 
+  pull_request:
+    types:
+      - opened
+      # here we have used types for the activity types
+  workflow_dispatch:
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output event data
+        run: echo "${{ toJSON(github.event) }}"
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Test code
+        run: npm run test
+      - name: Build code
+        run: npm run build
+      - name: Deploy project
+        run: echo "Deploying..."
+
+
+
+# Activity types
+# It gives more detailed control over when a workflow will be triggered
+# e.g for event Pull_Request -> opened, closed, edited
+
+# Filters:
+# More detailed control over when a workflow will be triggered
+# e.g push Event -> filter based on target branch
+# we donot want to trigger workflow when we push in branch rather than main branch
