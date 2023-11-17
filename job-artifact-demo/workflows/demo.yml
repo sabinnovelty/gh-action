@@ -1,0 +1,52 @@
+name: Deploy website
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint code
+        run: npm run lint
+      - name: Test code
+        run: npm run test
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm ci
+      - name: Build website
+        run: npm run build
+        # npm run build creates a dist file. dist file is the artifact of build jobs
+        # to store artifacts we need to add one more step. we have build in upload-artifact action in github action marketplace
+      - name: UPload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+           dist
+           package.json
+          #  here |(pipe) is use for multiple line instruction
+          #  here we have used dist folder to store build files
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: GEt build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: Output Contents
+        run: ls
+      - name: Deploy
+        run: echo "Deploying..."
+
+ # Note: every jobs get their own runner machine
