@@ -1,0 +1,26 @@
+name: Test project
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code from the repository
+      # to download code from repository there
+      # is already action defined. search github action ceckout in google to learn more
+      # uses is used to define actions
+      # with is used to configure actions. Some action required configuration
+        uses: actions/checkout
+        # with: 
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 18
+      - name: Install dependencies
+        run: npm ci
+        # npm ci is safer and it install packages of version defined in package.lock.json
+      - name: Run test
+        run: npm test
+
+
+# 1 checkout code
+# 2 make sure nodejs is installed and all dependencies installed
