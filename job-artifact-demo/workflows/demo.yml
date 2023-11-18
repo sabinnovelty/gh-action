@@ -18,6 +18,11 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-file: ${{ steps.publish.outputs.script-file }}
+      # same like github context value steps is also context value that gives information about steps context
+      # script-file is an identifier of output value
+    # simple value that is output by job and can be used by other job we need to define outputs outside of steps
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,6 +30,13 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+      - name: Publish JS Filename
+        id: publish
+        run: find dist/assets/*.js -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+        # below is the alternative way to set output value
+        # run: find dist/assets/*.js -type f -execdir echo '::set-output name=script-file::{}' ';'
+        # $GITHUB_OUTPUT is build in action that finds file name specified by command `find dist/assets/*.js -type f -execdir echo` and set in key value pair 'script-file={}' 
+        # here script-file is the output value name. here {} is an placeholder
         # npm run build creates a dist file. dist file is the artifact of build jobs
         # to store artifacts we need to add one more step. we have build in upload-artifact action in github action marketplace
       - name: UPload artifacts
@@ -46,6 +58,10 @@ jobs:
           name: dist-files
       - name: Output Contents
         run: ls
+      - name: Output filename
+        run: echo "${{ needs.build.outputs.script-file }}"
+        # echo "${{ needs.build.outputs.script-file }}" -> this outputs the output of other job 
+        # needs is github context object , build is job name outputs is defined in every job by github, script-file is output file name defined in build job
       - name: Deploy
         run: echo "Deploying..."
 
